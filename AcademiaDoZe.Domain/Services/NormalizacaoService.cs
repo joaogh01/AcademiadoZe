@@ -4,9 +4,9 @@ using System.Text.RegularExpressions;
 
 namespace AcademiaDoZe.Domain.Services;
 
-public static class NormalizadoService
+public static class NormalizacaoService
 {
-    private static readonly Regex EspacosRegex = new Regex(@"\s+", RegexOptions.Compiled);
+    private static readonly Regex EspacosRegex = new(@"\s+", RegexOptions.Compiled);
 
     public static bool TextoVazioOuNulo(string? texto) => string.IsNullOrWhiteSpace(texto);
 

@@ -15,7 +15,7 @@ public record Email
 
     public static Result<Email> Criar(string valor)
     {
-        var textoLimpo = NormalizadoService.LimparEspacos(valor);
+        var textoLimpo = NormalizacaoService.LimparEspacos(valor);
         if (string.IsNullOrWhiteSpace(textoLimpo) || !ValidarFormato(textoLimpo))
             return Result<Email>.Failure("Email", "EMAIL_FORMATO");
 
@@ -32,7 +32,7 @@ public record Email
         if (dominio.StartsWith('.') || dominio.EndsWith('.')) return false;
         var labels = dominio.Split('.');
         if (labels.Length < 2) return false;
-        if (labels.Any(l => string.IsNullOrWhiteSpace(l))) return false;
+        if (labels.Any(string.IsNullOrWhiteSpace)) return false;
         return true;
     }
 
