@@ -58,7 +58,7 @@ public static class AlunoMappingExtensions
             logradouroEntidade,
             alunoDto.Numero,
             alunoDto.Complemento ?? string.Empty,
-            alunoDto.Senha ?? string.Empty,
+            !string.IsNullOrWhiteSpace(alunoDto.Senha) ? alunoDto.Senha : "Academia@123",
             foto!
         );
 
@@ -82,7 +82,7 @@ public static class AlunoMappingExtensions
             if (fotoResult.IsSuccess) foto = fotoResult.Value;
         }
 
-        string senha = !string.IsNullOrWhiteSpace(alunoDto.Senha) ? alunoDto.Senha : aluno.Senha.Valor;
+        string senha = !string.IsNullOrWhiteSpace(alunoDto.Senha) ? alunoDto.Senha : (aluno.Senha?.Valor ?? "Academia@123");
 
         var result = Aluno.Criar(
             aluno.Id,
