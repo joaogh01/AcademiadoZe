@@ -8,36 +8,44 @@
 
     <FlyoutItem Title="Dashboard">
         <FlyoutItem.Icon>
-            <FontImageSource FontFamily="MaterialIcons" Glyph="&#xe871;" Color="{AppThemeBinding Light=#1F1F1F, Dark=#FFFFFF}" />
+            <FontImageSource FontFamily="MaterialIcons" Glyph="&#xe871;" />
         </FlyoutItem.Icon>
         <ShellContent ContentTemplate="{DataTemplate views:DashboardListPage}" Route="dashboard" />
     </FlyoutItem>
 
     <FlyoutItem Title="Logradouros">
         <FlyoutItem.Icon>
-            <FontImageSource FontFamily="MaterialIcons" Glyph="&#xe7f1;" Color="{AppThemeBinding Light=#1F1F1F, Dark=#FFFFFF}" />
+            <FontImageSource FontFamily="MaterialIcons" Glyph="&#xe55f;" />
         </FlyoutItem.Icon>
         <ShellContent ContentTemplate="{DataTemplate views:LogradouroListPage}" Route="logradouros" />
     </FlyoutItem>
 
     <FlyoutItem Title="Configurações">
         <FlyoutItem.Icon>
-            <FontImageSource FontFamily="MaterialIcons" Glyph="&#xe8b8;" Color="{AppThemeBinding Light=#1F1F1F, Dark=#FFFFFF}" />
+            <FontImageSource FontFamily="MaterialIcons" Glyph="&#xe8b8;" />
         </FlyoutItem.Icon>
         <ShellContent ContentTemplate="{DataTemplate views:ConfigPage}" Route="configuracoes" />
     </FlyoutItem>
 
     <FlyoutItem Title="Colaboradores">
-    <FlyoutItem.Icon>
-        <FontImageSource FontFamily="MaterialIcons" Glyph="&#xea67;" />
-    </FlyoutItem.Icon>
-    <ShellContent ContentTemplate="{DataTemplate views:ColaboradorListPage}" Route="colaboradores" />
-    
+        <FlyoutItem.Icon>
+            <FontImageSource FontFamily="MaterialIcons" Glyph="&#xe7fb;" />
+        </FlyoutItem.Icon>
+        <ShellContent ContentTemplate="{DataTemplate views:ColaboradorListPage}" Route="colaboradores" />
     </FlyoutItem>
+
     <FlyoutItem Title="Alunos">
-    <FlyoutItem.Icon>
-        <FontImageSource FontFamily="MaterialIcons" Glyph="&#xe7ef;" />
-    </FlyoutItem.Icon>
-    <ShellContent ContentTemplate="{DataTemplate views:AlunoListPage}" Route="alunos" />
-</FlyoutItem>
+        <FlyoutItem.Icon>
+            <FontImageSource FontFamily="MaterialIcons" Glyph="&#xe7ef;" />
+        </FlyoutItem.Icon>
+        <ShellContent ContentTemplate="{DataTemplate views:AlunoListPage}" Route="alunos" />
+    </FlyoutItem>
+
+    <FlyoutItem Title="Matrículas">
+        <FlyoutItem.Icon>
+            <FontImageSource FontFamily="MaterialIcons" Glyph="&#xefec;" />
+        </FlyoutItem.Icon>
+        <ShellContent ContentTemplate="{DataTemplate views:MatriculaListPage}" Route="matriculas" />
+    </FlyoutItem>
+
 </Shell>

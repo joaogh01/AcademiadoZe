@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="AcademiaDoZe.Presentation.AppMaui.Views.MatriculaPage"
+             xmlns:vm="clr-namespace:AcademiaDoZe.Presentation.AppMaui.ViewModels"
+             x:DataType="vm:MatriculaViewModel"
+             xmlns:converters="clr-namespace:AcademiaDoZe.Presentation.AppMaui.Converters"
+             Title="{Binding Title}">
+
+    <ContentPage.Resources>
+        <converters:FotoToImageSourceConverter x:Key="FotoToImageSourceConverter" />
+        <converters:EnumDisplayConverter x:Key="EnumDisplay" />
+    </ContentPage.Resources>
+
+    <Grid RowDefinitions="*, Auto">
+        <ScrollView Grid.Row="0">
+            <VerticalStackLayout Padding="20" Spacing="20">
+
+                <!-- 1. Vínculo do Aluno -->
+               <!-- 1. Vínculo do Aluno -->
+        <Border Style="{StaticResource CardBorder}" Padding="15">
+            <VerticalStackLayout Spacing="12">
+                <Label Text="Aluno" FontAttributes="Bold" FontSize="18" />
+
+                <!-- Campo de Busca por CPF -->
+                <Grid ColumnDefinitions="*, Auto" ColumnSpacing="10">
+                    <Entry Text="{Binding Matricula.AlunoMatricula.Cpf, Mode=TwoWay}"
+                           Placeholder="Digite o CPF do aluno..."
+                           Keyboard="Numeric"
+                           ClearButtonVisibility="WhileEditing" />
+                    <Button Grid.Column="1"
+                            Text="Buscar"
+                            Style="{StaticResource ButtonPrimary}"
+                            Command="{Binding SearchByCpfCommand}" />
+                </Grid>
+
+                <!-- Card Aluno Encontrado -->
+                <Border IsVisible="{Binding HasAlunoVinculado}"
+                        BackgroundColor="{AppThemeBinding Light={StaticResource Gray100}, Dark={StaticResource Gray900}}"
+                        StrokeShape="RoundRectangle 8"
+                        Padding="12">
+                    <Grid ColumnDefinitions="Auto, *" ColumnSpacing="15" RowDefinitions="Auto, Auto, Auto">
+                        <Border Grid.RowSpan="3"
+                                HeightRequest="64" WidthRequest="64"
+                                StrokeShape="RoundRectangle 32"
+                                Stroke="{StaticResource Primary}" StrokeThickness="2">
+                            <Image Source="{Binding Matricula.AlunoMatricula.Foto, Converter={StaticResource FotoToImageSourceConverter}}"
+                                   Aspect="AspectFill" HeightRequest="64" WidthRequest="64" />
+                        </Border>
+
+                        <Label Grid.Row="0" Grid.Column="1" Text="{Binding Matricula.AlunoMatricula.Nome}" FontAttributes="Bold" FontSize="16" />
+                        <Label Grid.Row="1" Grid.Column="1" Text="{Binding Matricula.AlunoMatricula.Cpf, StringFormat='CPF: {0}'}" FontSize="13" />
+                        <Label Grid.Row="2" Grid.Column="1" Text="{Binding Matricula.AlunoMatricula.DataNascimento, StringFormat='Nascimento: {0:dd/MM/yyyy}'}" FontSize="13" />
+                    </Grid>
+                </Border>
+            </VerticalStackLayout>
+        </Border>
+
+              <!-- 2. Detalhes do Plano -->
+        <Border Style="{StaticResource CardBorder}" Padding="15">
+            <VerticalStackLayout Spacing="12">
+                <Label Text="Plano e Vigência" FontAttributes="Bold" FontSize="18" />
+
+                <Label Text="Plano:" FontAttributes="Bold" FontSize="13" />
+                <Picker ItemsSource="{Binding PlanoTipos}"
+                        SelectedItem="{Binding PlanoSelecionado, Mode=TwoWay}"
+                        ItemDisplayBinding="{Binding .}" />
+
+                <Grid ColumnDefinitions="*, *" ColumnSpacing="15">
+                    <VerticalStackLayout Grid.Column="0" Spacing="4">
+                        <Label Text="Data de Início:" FontAttributes="Bold" FontSize="13" />
+                        <DatePicker Date="{Binding DataInicio, Mode=TwoWay}" Format="dd/MM/yyyy" />
+                    </VerticalStackLayout>
+
+                    <VerticalStackLayout Grid.Column="1" Spacing="4">
+                        <Label Text="Data de Término:" FontAttributes="Bold" FontSize="13" />
+                        <DatePicker Date="{Binding DataFim, Mode=OneWay}" Format="dd/MM/yyyy" IsEnabled="False" />
+                    </VerticalStackLayout>
+                </Grid>
+
+                <Label Text="Objetivo:" FontAttributes="Bold" FontSize="13" Margin="0,5,0,0" />
+                <Editor Text="{Binding Matricula.Objetivo, Mode=TwoWay}"
+                        Placeholder="Objetivos do aluno (ex: condicionamento, hipertrofia)..."
+                        AutoSize="TextChanges" HeightRequest="70" />
+            </VerticalStackLayout>
+        </Border>
+
+                <!-- 3. Restrições Médicas -->
+                <Border Style="{StaticResource CardBorder}" Padding="15">
+                    <VerticalStackLayout Spacing="12">
+                        <Label Text="Restrições Médicas" FontAttributes="Bold" FontSize="18" />
+
+                       <VerticalStackLayout BindableLayout.ItemsSource="{Binding RestricoesMulti}" Spacing="10">
+    <BindableLayout.ItemTemplate>
+        <DataTemplate x:DataType="vm:RestricaoSelectable">
+            <HorizontalStackLayout Spacing="10" VerticalOptions="Center">
+                <CheckBox IsChecked="{Binding IsSelected}" 
+                          Color="{StaticResource Primary}" 
+                          VerticalOptions="Center" />
+                <Label Text="{Binding Descricao}" TextColor="White" FontSize="14" VerticalOptions="Center" />
+            </HorizontalStackLayout>
+        </DataTemplate>
+    </BindableLayout.ItemTemplate>
+</VerticalStackLayout>
+
+                        <Label Text="Observações Médicas:" FontAttributes="Bold" FontSize="13" Margin="0,5,0,0" />
+                        <Editor Text="{Binding ObservacoesRestricoes}"
+                                Placeholder="Detalhes adicionais sobre restrições médicas..."
+                                AutoSize="TextChanges" HeightRequest="60" />
+
+                        <Label Text="Laudo Médico (Obrigatório se houver restrições):" FontAttributes="Bold" FontSize="13" Margin="0,5,0,0" />
+                        <Grid ColumnDefinitions="*, Auto" ColumnSpacing="10">
+    <Label Text="{Binding NomeArquivoLaudo, FallbackValue='Nenhum laudo selecionado'}"
+           VerticalOptions="Center" FontSize="13" LineBreakMode="TailTruncation" TextColor="White" />
+    <Button Grid.Column="1" Text="Anexar Laudo"
+            Style="{StaticResource ButtonSecondary}"
+            Command="{Binding AnexarLaudoCommand}" />
+</Grid>
+                    </VerticalStackLayout>
+                </Border>
+
+            </VerticalStackLayout>
+        </ScrollView>
+
+        <!-- Barra Inferior de Botões -->
+        <Border Grid.Row="1" Style="{StaticResource CardBorder}" Padding="15" Margin="8">
+            <Grid ColumnDefinitions="*, *" ColumnSpacing="15">
+                <Button Grid.Column="0" Text="Cancelar"
+                        Style="{StaticResource ButtonSecondary}"
+                        Command="{Binding CancelarCommand}" />
+
+                <Button Grid.Column="1" Text="Salvar Matrícula"
+        Style="{StaticResource ButtonPrimary}"
+        Command="{Binding SaveMatriculaCommand}" />
+            </Grid>
+        </Border>
+
+        <ActivityIndicator Grid.RowSpan="2" IsVisible="{Binding IsBusy}" IsRunning="{Binding IsBusy}"
+                           VerticalOptions="Center" HorizontalOptions="Center" />
+    </Grid>
+</ContentPage>

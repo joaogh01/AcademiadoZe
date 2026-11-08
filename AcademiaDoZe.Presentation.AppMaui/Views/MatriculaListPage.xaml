@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:AcademiaDoZe.Presentation.AppMaui.ViewModels"
+             xmlns:dto="clr-namespace:AcademiaDoZe.Application.DTOs;assembly=AcademiaDoZe.Application"
+             x:Class="AcademiaDoZe.Presentation.AppMaui.Views.MatriculaListPage"
+             x:DataType="vm:MatriculaListViewModel"
+             Title="Matrículas">
+
+    <Grid RowDefinitions="Auto, *">
+        <!-- Topo: Título e Botão Nova Matrícula -->
+        <Border Grid.Row="0" Margin="15,10" Style="{StaticResource CardBorder}">
+            <Grid ColumnDefinitions="*, Auto" Padding="10">
+                <Label Text="Gestão de Matrículas" VerticalOptions="Center" FontAttributes="Bold" FontSize="16" />
+                <Button Grid.Column="1" Text="+ Nova Matrícula" Clicked="OnNovaMatriculaClicked" Style="{StaticResource ButtonPrimary}" />
+            </Grid>
+        </Border>
+
+        <!-- Lista Dinâmica de Matrículas -->
+        <RefreshView Grid.Row="1" 
+                     IsRefreshing="{Binding IsRefreshing}" 
+                     Command="{Binding RefreshCommand}">
+            
+            <CollectionView ItemsSource="{Binding Matriculas}" 
+                            Margin="15,0,15,15"
+                            SelectionMode="None">
+                
+                <CollectionView.EmptyView>
+                    <VerticalStackLayout VerticalOptions="Center" HorizontalOptions="Center" Spacing="15">
+                        <Label Text="Nenhuma matrícula cadastrada" Style="{StaticResource SubHeadline}" HorizontalTextAlignment="Center" />
+                        <Button Text="Cadastrar Matrícula" Clicked="OnNovaMatriculaClicked" Style="{StaticResource ButtonPrimary}" />
+                    </VerticalStackLayout>
+                </CollectionView.EmptyView>
+
+                <CollectionView.ItemTemplate>
+                    <DataTemplate x:DataType="dto:MatriculaDto">
+                        <Border Margin="0,5" Padding="15" Style="{StaticResource CardBorder}">
+                            <Grid ColumnDefinitions="*, Auto" RowDefinitions="Auto, Auto">
+                                <VerticalStackLayout Grid.Column="0" Spacing="4">
+                                    <Label Text="{Binding AlunoMatricula.Nome}" FontAttributes="Bold" FontSize="16" />
+                                    <Label Text="{Binding Plano, StringFormat='Plano: {0}'}" FontSize="13" TextColor="Gray" />
+                                    <Label Text="{Binding Objetivo, StringFormat='Objetivo: {0}'}" FontSize="12" TextColor="Gray" />
+                                </VerticalStackLayout>
+
+                                <HorizontalStackLayout Grid.Column="1" Grid.RowSpan="2" VerticalOptions="Center" Spacing="10">
+                                    <Button Text="Editar" 
+                                            Command="{Binding Source={RelativeSource AncestorType={x:Type vm:MatriculaListViewModel}}, Path=EditMatriculaCommand}"
+                                            CommandParameter="{Binding .}"
+                                            Style="{StaticResource ButtonSecondary}" />
+                                </HorizontalStackLayout>
+                                <HorizontalStackLayout Grid.Column="1" Grid.RowSpan="2" VerticalOptions="Center" Spacing="10">
+    <Button Text="Editar" 
+            Command="{Binding Source={RelativeSource AncestorType={x:Type vm:MatriculaListViewModel}}, Path=EditMatriculaCommand}"
+            CommandParameter="{Binding .}"
+            Style="{StaticResource ButtonSecondary}" />
+
+    <Button Text="Excluir" 
+            Command="{Binding Source={RelativeSource AncestorType={x:Type vm:MatriculaListViewModel}}, Path=DeleteMatriculaCommand}"
+            CommandParameter="{Binding .}"
+            BackgroundColor="#B00020"
+            TextColor="White" />
+</HorizontalStackLayout>
+                            </Grid>
+                        </Border>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+
+            </CollectionView>
+        </RefreshView>
+    </Grid>
+</ContentPage>

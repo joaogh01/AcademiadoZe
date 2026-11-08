@@ -20,6 +20,7 @@ public static class MauiProgram
         });
 
         ConfigurationHelper.ConfigureServices(builder.Services);
+        
 
         // ViewModels
         builder.Services.AddTransient<DashboardListViewModel>();
@@ -43,6 +44,10 @@ public static class MauiProgram
         builder.Services.AddTransient<AlunoListViewModel>();
         builder.Services.AddTransient<AlunoViewModel>();
 
+        builder.Services.AddTransient<MatriculaListViewModel>();
+        builder.Services.AddTransient<MatriculaViewModel>();
+        builder.Services.AddTransient<MatriculaListPage>();
+        builder.Services.AddTransient<MatriculaPage>();
         // Views
         builder.Services.AddTransient<AlunoListPage>();
         builder.Services.AddTransient<AlunoPage>();

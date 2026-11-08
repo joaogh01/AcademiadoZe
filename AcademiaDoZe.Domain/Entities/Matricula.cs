@@ -61,8 +61,8 @@ public class Matricula : Entity, IAggregateRoot
         if (NormalizacaoService.TextoVazioOuNulo(objetivo)) notifications.Add(new Notification("Objetivo", "OBJETIVO_OBRIGATORIO"));
         else objetivo = NormalizacaoService.LimparEspacos(objetivo);
 
-        if (restricoesMedicas != MatriculaRestricoes.None && laudoMedico == null)
-            notifications.Add(new Notification("LaudoMedico", "RESTRICOES_LAUDO_OBRIGATORIO"));
+        // if (restricoesMedicas != MatriculaRestricoes.None && laudoMedico == null)
+        //    notifications.Add(new Notification("LaudoMedico", "RESTRICOES_LAUDO_OBRIGATORIO"));
 
         observacoesRestricoes = NormalizacaoService.LimparEspacos(observacoesRestricoes);
 
