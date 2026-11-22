@@ -1,0 +1,226 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:AcademiaDoZe.Presentation.AppMaui.ViewModels"
+             x:Class="AcademiaDoZe.Presentation.AppMaui.Views.AcessoPage"
+             Title="{Binding Title}">
+
+    <ScrollView>
+        <VerticalStackLayout Padding="16" Spacing="16">
+
+            <!-- Cartão 1: Seleção de Modo (Aluno / Colaborador) -->
+            <Border StrokeShape="RoundRectangle 12" Padding="16" BackgroundColor="#1E1E1E" Stroke="#333333">
+                <VerticalStackLayout Spacing="12">
+                    <Label Text="Controle de Acesso / Catraca"
+                           FontSize="22"
+                           FontAttributes="Bold"
+                           HorizontalOptions="Center"
+                           TextColor="White" />
+
+                    <Label Text="Selecione se o acesso é de um Aluno ou Colaborador:"
+                           FontSize="13"
+                           HorizontalOptions="Center"
+                           TextColor="#CCCCCC" />
+
+                    <Grid ColumnDefinitions="*,*" ColumnSpacing="12">
+                        <Button Grid.Column="0"
+                                Text="Aluno"
+                                Command="{Binding SelecionarModoAlunoCommand}"
+                                BackgroundColor="#B4A5F8"
+                                TextColor="#1A1A1A"
+                                FontAttributes="Bold"
+                                CornerRadius="20"
+                                HeightRequest="44" />
+
+                        <Button Grid.Column="1"
+                                Text="Colaborador"
+                                Command="{Binding SelecionarModoColaboradorCommand}"
+                                BackgroundColor="#B4A5F8"
+                                TextColor="#1A1A1A"
+                                FontAttributes="Bold"
+                                CornerRadius="20"
+                                HeightRequest="44" />
+                    </Grid>
+
+                    <Label Text="{Binding ModoTexto}"
+                           FontSize="13"
+                           FontAttributes="Bold"
+                           HorizontalOptions="Center"
+                           TextColor="#9D8DF1" />
+                </VerticalStackLayout>
+            </Border>
+
+            <!-- Cartão 2: Localizar Pessoa -->
+            <Border StrokeShape="RoundRectangle 12" Padding="16" BackgroundColor="#1E1E1E" Stroke="#333333">
+                <VerticalStackLayout Spacing="10">
+                    <Label Text="Localizar Pessoa"
+                           FontSize="18"
+                           FontAttributes="Bold"
+                           HorizontalOptions="Center"
+                           TextColor="White" />
+
+                    <SearchBar Placeholder="Digite nome ou CPF para filtrar..."
+                               Text="{Binding FiltroTexto}"
+                               SearchCommand="{Binding BuscarPessoaCommand}"
+                               TextColor="White"
+                               PlaceholderColor="#888888" />
+
+                    <Label Text="{Binding LabelPicker}"
+                           FontSize="13"
+                           FontAttributes="Bold"
+                           TextColor="#E0E0E0" />
+
+                    <Picker Title="Toque para escolher..."
+                            ItemsSource="{Binding PessoasFiltradas}"
+                            SelectedItem="{Binding PessoaSelecionada}"
+                            TextColor="White"
+                            TitleColor="#888888" />
+                </VerticalStackLayout>
+            </Border>
+
+            <!-- Cartão 3: Identificação e Liberação -->
+            <Border StrokeShape="RoundRectangle 12" Padding="16" BackgroundColor="#1E1E1E" Stroke="#333333"
+                    IsVisible="{Binding TemPessoaSelecionada}">
+                <VerticalStackLayout Spacing="14">
+                    <Label Text="Identificação e Liberação"
+                           FontSize="18"
+                           FontAttributes="Bold"
+                           HorizontalOptions="Center"
+                           TextColor="White" />
+
+                    <Grid ColumnDefinitions="Auto,*" ColumnSpacing="14" VerticalOptions="Center">
+                        <Border Grid.Column="0"
+                                WidthRequest="64"
+                                HeightRequest="64"
+                                StrokeShape="RoundRectangle 32"
+                                Stroke="#9D8DF1"
+                                StrokeThickness="2"
+                                BackgroundColor="#2C2C2C">
+                            <Label Text="👤"
+                                   FontSize="28"
+                                   HorizontalOptions="Center"
+                                   VerticalOptions="Center" />
+                        </Border>
+
+                        <VerticalStackLayout Grid.Column="1" Spacing="4" VerticalOptions="Center">
+                            <Label Text="{Binding PessoaSelecionada.Nome}"
+                                   FontSize="16"
+                                   FontAttributes="Bold"
+                                   TextColor="White" />
+
+                            <Label Text="{Binding PessoaSelecionada.Cpf, StringFormat='CPF: {0}'}"
+                                   FontSize="13"
+                                   TextColor="#BBBBBB" />
+
+                            <Border BackgroundColor="{Binding StatusPresencaCor}"
+                                    StrokeShape="RoundRectangle 6"
+                                    Padding="10,4"
+                                    HorizontalOptions="Start"
+                                    StrokeThickness="0">
+                                <Label Text="{Binding StatusPresencaTexto}"
+                                       FontSize="11"
+                                       FontAttributes="Bold"
+                                       TextColor="White" />
+                            </Border>
+                        </VerticalStackLayout>
+                    </Grid>
+
+                    <Button Text="{Binding BotaoAcaoTexto}"
+                            Command="{Binding RegistrarAcessoCommand}"
+                            BackgroundColor="{Binding BotaoAcaoCor}"
+                            TextColor="#1A1A1A"
+                            FontSize="16"
+                            FontAttributes="Bold"
+                            CornerRadius="24"
+                            HeightRequest="48" />
+                </VerticalStackLayout>
+            </Border>
+
+            <!-- Banner de Retorno (Entrada Autorizada / Acesso Negado / Saída Registrada) -->
+            <Border StrokeShape="RoundRectangle 12"
+                    Padding="14"
+                    BackgroundColor="{Binding FeedbackCor}"
+                    StrokeThickness="0"
+                    IsVisible="{Binding TemFeedback}">
+                <VerticalStackLayout Spacing="4">
+                    <Label Text="{Binding FeedbackTitulo}"
+                           FontSize="15"
+                           FontAttributes="Bold"
+                           TextColor="White" />
+                    <Label Text="{Binding FeedbackMensagem}"
+                           FontSize="13"
+                           TextColor="White" />
+                </VerticalStackLayout>
+            </Border>
+
+            <!-- Cartão 4: Acessos Registrados Hoje -->
+            <Border StrokeShape="RoundRectangle 12" Padding="16" BackgroundColor="#1E1E1E" Stroke="#333333">
+                <VerticalStackLayout Spacing="12">
+                    <Grid ColumnDefinitions="*,Auto">
+                        <Label Grid.Column="0"
+                               Text="Acessos Registrados Hoje"
+                               FontSize="18"
+                               FontAttributes="Bold"
+                               VerticalOptions="Center"
+                               TextColor="White" />
+
+                        <Button Grid.Column="1"
+                                Text="Atualizar"
+                                Command="{Binding CarregarAcessosHojeCommand}"
+                                BackgroundColor="#B4A5F8"
+                                TextColor="#1A1A1A"
+                                FontAttributes="Bold"
+                                CornerRadius="16"
+                                Padding="14,6"
+                                HeightRequest="36" />
+                    </Grid>
+
+                    <CollectionView ItemsSource="{Binding AcessosHoje}" SelectionMode="None">
+                        <CollectionView.EmptyView>
+                            <Label Text="Nenhum acesso registrado na data de hoje."
+                                   TextColor="#888888"
+                                   FontSize="13"
+                                   HorizontalOptions="Center"
+                                   Margin="0,10" />
+                        </CollectionView.EmptyView>
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate x:DataType="vm:AcessoRegistroHojeItem">
+                                <Grid ColumnDefinitions="Auto,*,Auto" ColumnSpacing="10" Padding="0,8">
+                                    <Border Grid.Column="0"
+                                            WidthRequest="36"
+                                            HeightRequest="36"
+                                            StrokeShape="RoundRectangle 18"
+                                            BackgroundColor="#312E81"
+                                            StrokeThickness="0">
+                                        <Label Text="✓"
+                                               TextColor="White"
+                                               FontAttributes="Bold"
+                                               HorizontalOptions="Center"
+                                               VerticalOptions="Center" />
+                                    </Border>
+
+                                    <VerticalStackLayout Grid.Column="1" Spacing="2" VerticalOptions="Center">
+                                        <Label Text="{Binding Nome}"
+                                               FontSize="14"
+                                               FontAttributes="Bold"
+                                               TextColor="White" />
+                                        <Label Text="{Binding Descricao}"
+                                               FontSize="12"
+                                               TextColor="#BBBBBB" />
+                                    </VerticalStackLayout>
+
+                                    <Label Grid.Column="2"
+                                           Text="{Binding Hora}"
+                                           FontSize="12"
+                                           TextColor="#999999"
+                                           VerticalOptions="Center" />
+                                </Grid>
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+                    </CollectionView>
+                </VerticalStackLayout>
+            </Border>
+
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>
